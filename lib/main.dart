@@ -1,6 +1,13 @@
 import 'package:flutter/material.dart';
+//import 'package:spotify/spotify_browser.dart';
+import 'package:http/http.dart' as http;
+import 'package:flutter_html_view/flutter_html_view.dart';
 
 void main() => runApp(MyApp());
+
+final String clientID = 'cc87729261a34b0196063395ceb48a44';
+
+String htmlString;
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
@@ -54,6 +61,7 @@ class _MyHomePageState extends State<MyHomePage> {
       // _counter without calling setState(), then the build method would not be
       // called again, and so nothing would appear to happen.
       _counter++;
+      _auth();
     });
   }
 
@@ -71,41 +79,40 @@ class _MyHomePageState extends State<MyHomePage> {
         // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
       ),
-      body: Center(
+      body: new Container(
         // Center is a layout widget. It takes a single child and positions it
         // in the middle of the parent.
-        child: Column(
-          // Column is also layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.display1,
-            ),
-          ],
-        ),
+        child: new HtmlView(
+          data: htmlString,
+            onLaunchFail: (url) {
+              // optional, type Function
+              print("launch $url failed");
+            }),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _incrementCounter,
         tooltip: 'Increment',
-        child: Icon(Icons.add),
+        child: Icon(Icons.account_box),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
+
+void _auth() async {
+  //final String state = randomAlphaNumeric(20);
+  var url =
+      "https://accounts.spotify.com/authorize?client_id=cc87729261a34b0196063395ceb48a44&response_type=code&redirect_uri=https://google.com";
+  // Uri uri = new Uri.https("https://accounts.spotify.com/", "authorize", authQueryParameters);
+  var response = await http.get(url);
+  if (response.statusCode == 200) {
+    //var jsonResponse = convert.jsonDecode(response.body);
+    print(response.body);
+
+    htmlString = response.body;
+
+  } else {
+    print("Request failed with status: ${response.statusCode}.");
+  }
+}
+
+
