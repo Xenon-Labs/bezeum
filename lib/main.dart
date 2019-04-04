@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'spotifyAuth.dart' as spotifyAuth;
+
+
+const String spotifyClientId = "cc87729261a34b0196063395ceb48a44";
 
 void main() {
   runApp(MaterialApp(
@@ -20,9 +24,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext ctx) {
     //TODO: Mathusan
     return Scaffold(
-      backgroundColor: Theme.of(ctx).canvasColor,
       body: Center(
-          child: FlatButton(
+          child: RaisedButton(
               color: Colors.green,
               onPressed: () {
                 Navigator.push(ctx, SpotifyAuthPage());
@@ -39,13 +42,16 @@ class SpotifyAuthPage extends MaterialPageRoute<Null> {
               body: Center(
             child: RaisedButton(
                 onPressed: () {
-                  Navigator.pop(ctx);
+                  print(spotifyAuth.getToken(spotifyClientId));
+                  
                 },
                 child: Text("Sign into Spotify")),
           ));
         });
 }
 
+
+// NOT BEING USED:
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key key, this.title}) : super(key: key);
 
