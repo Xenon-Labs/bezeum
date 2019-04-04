@@ -35,14 +35,16 @@ class MyApp extends StatelessWidget {
   }
 }
 
+//TODO: Make look nice
 class SpotifyAuthPage extends MaterialPageRoute<Null> {
   SpotifyAuthPage()
       : super(builder: (BuildContext ctx) {
           return Scaffold(
               body: Center(
             child: RaisedButton(
-                onPressed: () {
-                  print(spotifyAuth.getToken(spotifyClientId));
+                onPressed: () async {
+                  String token = await (spotifyAuth.getToken(spotifyClientId));
+                  print(token);
                   
                 },
                 child: Text("Sign into Spotify")),
