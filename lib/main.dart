@@ -1,22 +1,23 @@
 import 'package:flutter/material.dart';
 import 'spotifyAuth.dart' as spotifyAuth;
 
-
 const String spotifyClientId = "cc87729261a34b0196063395ceb48a44";
 
 void main() {
   runApp(MaterialApp(
     title: 'Bezuem',
     home: MyApp(),
-    theme: ThemeData(),
+    theme: themeData,
     debugShowCheckedModeBanner: false,
   ));
 }
 
 final ThemeData themeData = ThemeData(
-  canvasColor: Colors.lightGreenAccent,
-  accentColor: Colors.black,
-  primarySwatch: Colors.green,
+  scaffoldBackgroundColor: Colors.teal[50],
+  buttonColor: Colors.teal[500],
+  primaryColor: Colors.teal[500],
+  hintColor: Colors.teal[900],
+  cursorColor: Colors.teal[500],
 );
 
 class MyApp extends StatelessWidget {
@@ -24,15 +25,34 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext ctx) {
     //TODO: Mathusan
     return Scaffold(
-      body: Center(
-          child: RaisedButton(
-              color: Colors.green,
+        body: Center(
+            child: ListView(
+                shrinkWrap: true,
+                padding: const EdgeInsets.all(20.0),
+                children: <Widget>[
+          _buildTextField("Apple Playlist URL", TextEditingController(), false),
+          SizedBox(height: 50.0),
+          RaisedButton(
               onPressed: () {
                 Navigator.push(ctx, SpotifyAuthPage());
               },
-              child: Text("Enter Playlist URL"))),
-    );
+              child: Text("Sumbit"),
+              elevation: 7.0,
+              shape: BeveledRectangleBorder(
+                borderRadius: BorderRadius.circular(2),
+              )),
+        ])));
   }
+}
+
+Widget _buildTextField(
+    String label, TextEditingController controller, bool isPassword) {
+  return TextField(
+      controller: controller, 
+      decoration: InputDecoration(
+        labelText: label,
+        border: OutlineInputBorder(),
+        fillColor: Colors.black));
 }
 
 //TODO: Make look nice
@@ -45,13 +65,11 @@ class SpotifyAuthPage extends MaterialPageRoute<Null> {
                 onPressed: () async {
                   String token = await (spotifyAuth.getToken(spotifyClientId));
                   print(token);
-                  
                 },
                 child: Text("Sign into Spotify")),
           ));
         });
 }
-
 
 // NOT BEING USED:
 class MyHomePage extends StatefulWidget {
