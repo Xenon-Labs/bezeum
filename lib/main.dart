@@ -26,33 +26,45 @@ class MyApp extends StatelessWidget {
     //TODO: Mathusan
     return Scaffold(
         body: Center(
-            child: ListView(
-                shrinkWrap: true,
-                padding: const EdgeInsets.all(20.0),
-                children: <Widget>[
-          _buildTextField("Apple Playlist URL", TextEditingController(), false),
-          SizedBox(height: 50.0),
-          RaisedButton(
-              onPressed: () {
-                Navigator.push(ctx, SpotifyAuthPage());
-              },
-              child: Text("Sumbit"),
-              elevation: 7.0,
-              shape: BeveledRectangleBorder(
-                borderRadius: BorderRadius.circular(2),
-              )),
-        ])));
+            child: Container(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [
+                      const Color(0xFF5032b6),
+                      const Color(0xFFb765d3),
+                    ],
+                    begin: Alignment.bottomCenter,
+                    end: Alignment.topCenter,
+                  ),
+                ),
+                child: ListView(
+                    shrinkWrap: true,
+                    padding: const EdgeInsets.all(20.0),
+                    children: <Widget>[
+                      _buildTextField(
+                          "Apple Playlist URL", TextEditingController(), false),
+                      RaisedButton(
+                          onPressed: () {
+                            Navigator.push(ctx, SpotifyAuthPage());
+                          },
+                          child: Text("Sumbit"),
+                          elevation: 7.0,
+                          shape: BeveledRectangleBorder(
+                            borderRadius: BorderRadius.circular(2),
+                          )),
+                      SizedBox(height: MediaQuery.of(ctx).size.height),
+                    ]))));
   }
 }
 
 Widget _buildTextField(
     String label, TextEditingController controller, bool isPassword) {
   return TextField(
-      controller: controller, 
+      controller: controller,
       decoration: InputDecoration(
-        labelText: label,
-        border: OutlineInputBorder(),
-        fillColor: Colors.black));
+          labelText: label,
+          border: OutlineInputBorder(),
+          fillColor: Colors.black));
 }
 
 //TODO: Make look nice
